@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+
+    
+
+
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+    
+    <div id='network-feed'></div>
+   
+{% else %}
+
+    <div id='network'></div>
+    <h1> hey there</h1>
+{% endif %}
+
+{% endblock content %}
+
+
+
+
+
+
+
+

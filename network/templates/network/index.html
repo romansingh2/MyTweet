@@ -1,0 +1,241 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+    
+<div id = 'network'>
+
+</div>
+    <div class='row text-center d-none'>
+        <div class='col'>
+            <h1>Welcome to MyTweet</h1>
+        </div>
+    </div>
+
+    
+    <div class='row mb-4 d-none'>
+        <div class='col-md-4 mx-auto col-10'>
+            <form class='form' id='Post-create-form'method='POST' action='/create-post'>
+                {% csrf_token %}
+            <div class='d-none alert alert-danger' id='Post-create-form-error'></div>
+            <input type='hidden' value='/' name='next' />
+            <textarea required = 'required' class='form-control' name='tweet' placeholder='Your Post...'></textarea>
+            <button type='submit' class='btn btn-primary'>Post</button>
+            </form>
+        </div>
+    </div>
+
+
+    
+
+
+    </div>
+    
+    <div class = 'row d-none' id = 'posts'>
+        Loading...
+    </div>
+
+    
+                 
+    
+    <script>
+
+                    
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+        
+        
+    function handlePostFormError(msg, display){
+        var myErrorDiv = document.getElementById("Post-create-form-error") //get the value of the element
+        if (display === true){ //if alert error is displayed/true
+                // show error
+            myErrorDiv.setAttribute("class", "d-block alert alert-danger") //d-block = show, d-none = hidden. set the class value to d-block alert alert-danger to show the error
+            myErrorDiv.innerText = msg 
+        } else {
+                //hide error
+            myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+        }
+    }
+
+
+    function handlePostCreateFormDidSubmit(event) {
+        event.preventDefault() //The preventDefault() method cancels the event if it is cancelable, meaning that the default action that belongs to the event will not occur.
+        const myForm = event.target //get the element that triggered a specific event
+        const myFormData = new FormData(myForm) // new class of myForm
+        const url = myForm.getAttribute("action") //get the value of the action attribute of myForm
+        const method = myForm.getAttribute("method") //get the value of the method attribute of myForm
+        const xhr = new XMLHttpRequest() // XMLHttpRequest (XHR) objects are used to interact with servers. You can retrieve data from a URL without having to do a full page refresh. 
+        const responseType = "json" //standard text-based format for representing structured data based on JavaScript object syntax. 
+        xhr.responseType = responseType //The XMLHttpRequest property responseType is an enumerated string value specifying the type of data contained in the response. It also lets the author change the response type. If an empty string is set as the value of responseType, the default value of text is used
+        xhr.open(method, url) //open() initializes a newly-created request, or re-initializes an existing one.
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.onload = function() { //is the function called when an XMLHttpRequest transaction completes successfully.
+            if (xhr.status === 201) {
+                const newPostJson = xhr.response //The XMLHttpRequest response property returns the response's body content as an ArrayBuffer, Blob, Document, JavaScript Object, or DOMString, depending on the value of the request's responseType property.
+                const newPostElement = formatPostElement(newPostJson)
+                const ogHtml = PostsContainerElement.innerHTML
+                PostsContainerElement.innerHTML = newPostElement + ogHtml
+                myForm.reset() //reset input field
+            } else if (xhr.status === 400) {
+                const errorJson = xhr.response
+                const tweetError = errorJson.tweet
+                let tweetErrorMsg;
+                if (tweetError) {
+                    tweetErrorMsg = tweetError[0]
+                    if (tweetErrorMsg) {      
+                        handlePostFormError(tweetErrorMsg, true)
+                    } else {
+                        alert("An error occured. Please try again.")
+                    }
+                } else {
+                    alert("An error occured. Please try again.")
+                }
+            } else if (xhr.status === 401) {
+            alert("You must login!")
+            window.location.href = "/login"
+        } else if (xhr.status === 403) {
+            alert("You must login!")
+            window.location.href = "/login"
+        }
+            else if (xhr.status === 500) {
+                alert("There was a server error, please try again")
+            }
+        }
+        xhr.onerror = function() {
+            alert("An error occurred. Please try again later.")
+        }
+        xhr.send(myFormData)
+    }
+
+    const PostCreateFormEl = document.getElementById("Post-create-form")
+    PostCreateFormEl.addEventListener("submit", handlePostCreateFormDidSubmit)
+
+
+
+    const PostsContainerElement = document.getElementById("posts")
+        
+    function loadPosts(postsElement) {   
+        const xhr = new XMLHttpRequest()
+        const method = 'GET' // "POST"
+        const url = "/posts"
+        const responseType = "json"
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function() {
+            const serverResponse = xhr.response
+            const listedItems = serverResponse // array
+            var finalPostStr = ""
+            var i;
+            for (i=0;i<listedItems.length; i++) {
+                var PostObj  =  listedItems[i]
+                var currentItem = formatPostElement(PostObj)
+                finalPostStr += currentItem
+            }
+            postsElement.innerHTML = finalPostStr
+        }
+        xhr.send()
+    }
+
+    loadPosts(PostsContainerElement)
+
+    /*function handle_Like(Post_id, LikesNum) {
+            console.log(Post_id, LikesNum)
+            const url = "/api/posts/action"
+            const method = "POST"
+            const data = JSON.stringify({
+                id:Post_id,
+                action: "like"
+            })
+            const xhr = new XMLHttpRequest()
+            xhr.open(method, url)
+            xhr.setRequestHeader("Content-type", "application/json")
+            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+            xhr.onload = function() {
+                console.log(xhr.status, xhr.response)
+            }
+            xhr.send(data)
+            return
+        }
+        */
+
+    function handlePostActionBtn(Post_id, LikesNum, action) {
+        console.log(Post_id, LikesNum)
+        const url = "/api/posts/action/"
+        const method="POST"
+        const data = JSON.stringify({
+            id: Post_id,
+            action: action
+        })
+        const xhr = new XMLHttpRequest()
+        const csrftoken = getCookie('csrftoken');
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json") //setRequestHeader(name, value) Sets the request header with the given name and value.
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function() {
+            loadPosts(PostsContainerElement)
+        }
+        xhr.send(data)
+        return
+    }
+
+    function RetweetBtn(Post) {
+    return "<button class='btn btn-outline-success btn-sm' onclick=handlePostActionBtn(" + 
+    Post.id + "," + Post.likes + ",'retweet')>Retweet</button>"
+    }
+
+
+    function UnLikeBtn(Post) {
+        return "<button class='btn btn-outline-primary btn-sm' onclick=handlePostActionBtn(" + 
+        Post.id + "," + Post.likes + ",'unlike')>Unlike</button>"
+    }
+
+
+
+
+    function LikeBtn(Post){
+    return "<button class='btn btn-primary btn-sm' onclick=handlePostActionBtn(" + 
+    Post.id + "," + Post.likes + ",'like')>" + Post.likes + " Likes </button>"
+}
+
+    function formatPostElement(Post){
+            
+        var formattedPost = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 Post' id='Post-" + Post.id 
+        + "'><p>" + Post.tweet + 
+        "</p><div class='btn-group'>" +
+            
+            LikeBtn(Post) +
+            UnLikeBtn(Post) + 
+            RetweetBtn(Post) +
+            "</div></div>" 
+        return formattedPost
+        }
+        
+        </script>
+{% endblock %}
+
+<!-- 
+<script src="{% static 'network/tweet.js' %}"></script>
+
+
+
+
+
+
