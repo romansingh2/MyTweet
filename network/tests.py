@@ -1,7 +1,9 @@
-from django.test import TestCase
-from .models import Post, User, PostLike
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
 from rest_framework.test import APIClient
+
+from .models import Post
 
 
 # Create your tests here.

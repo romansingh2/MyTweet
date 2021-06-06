@@ -10,11 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+
 import os
-from corsheaders.defaults import default_headers
-from django.contrib.auth import get_user_model
-
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #remember on same level as manage.py
@@ -40,7 +37,6 @@ POST_ACTION_OPTIONS = ["like", "unlike", "retweet"]
 # Application definition
 
 INSTALLED_APPS = [
-    'network',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,25 +46,23 @@ INSTALLED_APPS = [
     # third-party
     'corsheaders',
     'rest_framework',
-    #internal
+    # internal
     'accounts',
     'profiles',
-    
-
-    
+    'network',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'project4.urls'
 
@@ -149,7 +143,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
 
 CORS_ORIGIN_ALLOW_ALL = True # any website has access to my api
-CORS_ALLOW_HEADERS = default_headers + ( 'HTTP_X_REQUESTED_WITH','X-CSRFToken', )
 CORS_URLS_REGEX = r'^/api/.*$'
 
 DEFAULT_RENDERER_CLASSES = [
@@ -165,9 +158,9 @@ if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
-    DEFAULT_AUTHENTICATION_CLASSES += [
-       'project4.rest_api.dev.DevAuthentication'
-    ]
+   # DEFAULT_AUTHENTICATION_CLASSES += [
+      # 'project4.rest_api.dev.DevAuthentication'
+ #   ]
 
 REST_FRAMEWORK = {
     

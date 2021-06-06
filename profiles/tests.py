@@ -1,11 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
-from network.models import Post, User, PostLike
+
 from rest_framework.test import APIClient
 
-
-# Create your tests here.
-from .models import Profile 
-from django.contrib.auth import get_user_model
+from .models import Profile
 
 User = get_user_model()
 

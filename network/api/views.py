@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth import get_user_model
 User = get_user_model()
+
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 
