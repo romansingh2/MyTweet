@@ -32,8 +32,8 @@
     
     <div class='d-none' id='network-feed'></div>
     <div class='d-none' id = 'post-container'></div>
-    <div class='network-profile-badge' data-username="romansingh"></div>
-    <div class='d-none' id="network" data-username="romansingh" data-can-tweet="false"></div>
+    <div class= 'network-profile-badge' data-username= "romansingh"></div>
+    <div class='d-none' id="network" data-username= "romansingh" data-can-post="false"></div>
   
     <!--
       This HTML file is a template.
@@ -55,6 +55,7 @@
         var postEl = "<div class='network-detail' data-post-id= " + postId +  " data-class-name='col-6 mx-auto'></div>"
         var mainContainer = document.getElementById("post-container")
         mainContainer.innerHTML = postEl
+        console.log("it worked")
       }
       
     </script>

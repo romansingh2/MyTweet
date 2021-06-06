@@ -3,9 +3,8 @@
 
 {% block body %}
     
-<div id = 'network'>
+<div id = 'network'></div>
 
-</div>
     <div class='row text-center d-none'>
         <div class='col'>
             <h1>Welcome to MyTweet</h1>
@@ -20,16 +19,14 @@
             <div class='d-none alert alert-danger' id='Post-create-form-error'></div>
             <input type='hidden' value='/' name='next' />
             <textarea required = 'required' class='form-control' name='tweet' placeholder='Your Post...'></textarea>
-            <button type='submit' class='btn btn-primary'>Post</button>
+            <button type='submit' class='btn btn-primary'>HI ITS POST</button>
+              </div>
             </form>
-        </div>
     </div>
-
-
     
 
 
-    </div>
+   
     
     <div class = 'row d-none' id = 'posts'>
         Loading...
@@ -152,27 +149,6 @@
     }
 
     loadPosts(PostsContainerElement)
-
-    /*function handle_Like(Post_id, LikesNum) {
-            console.log(Post_id, LikesNum)
-            const url = "/api/posts/action"
-            const method = "POST"
-            const data = JSON.stringify({
-                id:Post_id,
-                action: "like"
-            })
-            const xhr = new XMLHttpRequest()
-            xhr.open(method, url)
-            xhr.setRequestHeader("Content-type", "application/json")
-            xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-            xhr.onload = function() {
-                console.log(xhr.status, xhr.response)
-            }
-            xhr.send(data)
-            return
-        }
-        */
 
     function handlePostActionBtn(Post_id, LikesNum, action) {
         console.log(Post_id, LikesNum)
