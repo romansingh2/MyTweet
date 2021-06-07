@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from corsheaders.defaults import default_headers
 from django.contrib.auth import get_user_model
-import django_heroku
+
 
 
 
