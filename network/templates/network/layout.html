@@ -7,30 +7,22 @@
     <meta name="theme-color" content="#000000"/>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="search-bar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {% include 'network/react/css.html' %}
+     {% include 'network/react/css.html' %} 
     <style>
-      .bg-MyTweet {
-          background-color: #38d3e7!important;
+      .bg-MyTweet{
+          background-color: #0fcaeb!important;
       }
-
-      
-    
     </style>
     <title>MyTweet {% block head_title %}{% endblock head_title%}</title>
-    
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     {% include "network/components/navbar.html" %}
     <div class='container'>
-        
-      </form>
       {% block content %}
       {% endblock content %}
     </div>
-    {% include 'network/react/layout_embed.html' %}
-    {% include 'network/react/js.html' %}
+     {% include 'network/react/layout_embed.html' %}
+    {% include 'network/react/js.html' %} 
   </body>
 </html>

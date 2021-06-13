@@ -16,11 +16,9 @@ from django.contrib.auth import get_user_model
 
 
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #remember on same level as manage.py
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -29,9 +27,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '13kl@xtukpwe&xj2xoysxe9_6=tf@f8ewxer5n&ifnd46+6$%8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.cfe.sh', 'localhost']
+ALLOWED_HOSTS = ['*']
 LOGIN_URL = "/login"
 
 
@@ -54,16 +52,15 @@ INSTALLED_APPS = [
     #internal
     'accounts',
     'profiles',
-    
-
-    
+    'crispy_forms',
 ]
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,6 +85,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'project4.wsgi.application'
 
@@ -146,34 +144,29 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
 STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
 
+
 CORS_ORIGIN_ALLOW_ALL = True # any website has access to my api
-CORS_ALLOW_HEADERS = default_headers + ( 'HTTP_X_REQUESTED_WITH','X-CSRFToken', )
 CORS_URLS_REGEX = r'^/api/.*$'
+
 
 DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',
     ]
 
-
 DEFAULT_AUTHENTICATION_CLASSES = [
-        'rest_framework.authentication.SessionAuthentication'
+    'rest_framework.authentication.SessionAuthentication'
 ]
-
 if DEBUG:
     DEFAULT_RENDERER_CLASSES += [
         'rest_framework.renderers.BrowsableAPIRenderer',
     ]
-    #DEFAULT_AUTHENTICATION_CLASSES += [
-       #'project4.rest_api.dev.DevAuthentication'
-    #]
-
+    # DEFAULT_AUTHENTICATION_CLASSES += [
+    #     'tweetme2.rest_api.dev.DevAuthentication'
+    # ]
 REST_FRAMEWORK = {
     
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
 }
-
-django_heroku.settings(locals())

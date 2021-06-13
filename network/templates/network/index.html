@@ -3,7 +3,7 @@
 
 {% block body %}
     
-<div id = 'network'></div>
+<div id='network'></div>
 
     <div class='row text-center d-none'>
         <div class='col'>
@@ -19,7 +19,7 @@
             <div class='d-none alert alert-danger' id='Post-create-form-error'></div>
             <input type='hidden' value='/' name='next' />
             <textarea required = 'required' class='form-control' name='tweet' placeholder='Your Post...'></textarea>
-            <button type='submit' class='btn btn-primary'>HI ITS POST</button>
+            <button type='submit' class='btn btn-primary'>POST</button>
               </div>
             </form>
     </div>
@@ -202,7 +202,8 @@
             RetweetBtn(Post) +
             "</div></div>" 
         return formattedPost
-        }
+        
+    }
         
         </script>
 {% endblock %}
